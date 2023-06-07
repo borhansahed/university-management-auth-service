@@ -1,18 +1,16 @@
 import mongoose from 'mongoose'
 import app from './app'
 import config from './config/index'
-
-/* eslint-disable no-console */
-async function main() {
+import logger from './shared/logger'
+;(async function main() {
   try {
     await mongoose.connect(config.database_url as string)
-    console.log('Database Connected')
+    logger.infoLogger.info(' Database Connected')
   } catch (err) {
-    console.log(err)
+    logger.errorLogger.error('not working', err)
   }
-}
+})()
 
 app.listen(config.port, () => {
-  console.log(`app listening on port ${config.port}`)
-  main()
+  logger.infoLogger.info(`app listening on port ${config.port}`)
 })
