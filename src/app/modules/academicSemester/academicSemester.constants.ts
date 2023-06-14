@@ -14,3 +14,11 @@ export const academicSemesterMonth: Month[] = [
   'November',
   'December',
 ]
+
+export const academicSemesterCode: {
+  [key: string]: string
+} = {
+  Autumn: '01',
+  Summer: '02',
+  Fall: '03',
+}
