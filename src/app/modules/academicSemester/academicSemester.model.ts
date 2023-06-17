@@ -4,7 +4,7 @@ import {
   IAcademicSemesterModel,
 } from './academicSemester.interface'
 import { academicSemesterMonth } from './academicSemester.constants'
-import ApiError from '../../errors/ApiError'
+import ApiError from '../../../errors/ApiError'
 import httpStatus from 'http-status'
 
 const academicSemesterSchema = new Schema<IAcademicSemester>(
@@ -15,7 +15,7 @@ const academicSemesterSchema = new Schema<IAcademicSemester>(
       enum: ['Autumn', 'Summer', 'Fall'],
     },
     year: {
-      type: Number,
+      type: String,
       required: true,
     },
     code: {

@@ -22,3 +22,5 @@ export const academicSemesterCode: {
   Summer: '02',
   Fall: '03',
 }
+
+export const academicSemesterSearchableFields = ['title', 'year', 'code']
