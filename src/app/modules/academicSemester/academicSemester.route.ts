@@ -1,14 +1,23 @@
 import express from 'express'
-import zodValidation from '../../middleware/zodValidation'
-import createAcademicSemesterZodSchema from './academicSemester.validation'
+import Validation from '../../middleware/zodValidation'
+import { AcademicSemesterValidation } from './academicSemester.validation'
 import { AcademicSemesterController } from './academicSemester.controller'
 
 const route = express.Router()
 
+route.get('/', AcademicSemesterController.getAllSemester)
 route.post(
   '/create-semester',
-  zodValidation(createAcademicSemesterZodSchema),
+  Validation(AcademicSemesterValidation.createAcademicSemesterZodSchema),
   AcademicSemesterController.createSemester
 )
+route.get('/:id', AcademicSemesterController.getSingleSemester)
+route.patch(
+  '/:id',
+  Validation(AcademicSemesterValidation.updateAcademicSemesterZodSchema),
+  AcademicSemesterController.updateSemester
+)
+
+route.delete('/:id', AcademicSemesterController.deleteSemester)
 
 export const academicSemesterRoute = route

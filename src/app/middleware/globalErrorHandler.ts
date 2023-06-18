@@ -1,13 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import { ErrorRequestHandler } from 'express'
 import config from '../../config'
-import { IGenericCommonError, IGenericErrorMessage } from '../interfaces/error'
-import handleErrorValidation from '../errors/handleErrorValidation'
+import {
+  IGenericCommonError,
+  IGenericErrorMessage,
+} from '../../interfaces/error'
+import handleErrorValidation from '../../errors/handleErrorValidation'
 
-import ApiError from '../errors/ApiError'
+import ApiError from '../../errors/ApiError'
 import logger from '../../shared/logger'
 import { ZodError } from 'zod'
-import handleZodError from '../errors/handleZodError'
+import handleZodError from '../../errors/handleZodError'
+import handleCastError from '../../errors/handleCastError'
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = 500
@@ -25,6 +30,11 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     errorMessages = simplifiedError.errorMessages
   } else if (err instanceof ZodError) {
     const simplifiedError = handleZodError(err)
+    statusCode = simplifiedError.statusCode
+    message = simplifiedError.message
+    errorMessages = simplifiedError.errorMessages
+  } else if (err?.name === 'CastError') {
+    const simplifiedError = handleCastError(err)
     statusCode = simplifiedError.statusCode
     message = simplifiedError.message
     errorMessages = simplifiedError.errorMessages
@@ -57,7 +67,6 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     errorMessages,
     stack: config.env !== 'production' ? err?.stack : undefined,
   })
-  next()
 }
 
 export default globalErrorHandler
