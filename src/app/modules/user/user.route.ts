@@ -1,7 +1,7 @@
 import express from 'express'
 import { UserController } from './user.controller'
 import createUserZodSchema from './user.validation'
-import Validation from '../../middleware/zodValidation'
+import Validation from '../../middleware/Validation'
 
 const userRoute = express.Router()
 
