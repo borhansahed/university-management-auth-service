@@ -8,17 +8,17 @@ import { jwtHelper } from '../../../helper/jwtHelper'
 
 const loginUser = async (payload: ILoginUser) => {
   const { id, password } = payload
-  const user = new User()
 
-  const isUser = await user.isUserExit(id)
+  const isUser = await User.isUserExit(id)
 
   if (!isUser) {
     throw new ApiError(httpStatus.NOT_FOUND, "User doesn't Exits")
   }
 
-  const isPasswordMatch =
-    isUser.password && (await user.isPasswordMatch(password, isUser.password))
-  if (!isPasswordMatch) {
+  if (
+    isUser.password &&
+    !(await User.isPasswordMatch(password, isUser.password))
+  ) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect')
   }
 
@@ -48,6 +48,41 @@ const loginUser = async (payload: ILoginUser) => {
   }
 }
 
+const refreshToken = async (
+  token: string
+): Promise<{ newAccessToken: string }> => {
+  let verifiedToken = null
+
+  try {
+    verifiedToken = jwtHelper.jwtVerify(
+      token,
+      config.jwt.jwt_refresh_secret as Secret
+    )
+  } catch (err) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid refreshToken')
+  }
+
+  const { id } = verifiedToken
+  const isUserExit = await User.isUserExit(id)
+  if (!isUserExit) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User doesn't found")
+  }
+
+  const newAccessToken = jwtHelper.createToken(
+    {
+      id: isUserExit.id,
+      role: isUserExit.role,
+    },
+    config.jwt.jwt_access_secret as Secret,
+    { expiresIn: config.jwt.jwt_access_token_expires_in }
+  )
+
+  return {
+    newAccessToken,
+  }
+}
+
 export const AuthService = {
   loginUser,
+  refreshToken,
 }

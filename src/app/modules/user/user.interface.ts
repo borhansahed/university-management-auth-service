@@ -10,12 +10,17 @@ export type IUser = {
   // faculty?: Types.ObjectId
   // admin?: Types.ObjectId
 }
-export type IUserMethods = {
+// export type IUserMethods = {
+//   isUserExit(id: string): Promise<Partial<IUser> | null>
+//   isPasswordMatch(
+//     givenPassword: string,
+//     savedPassword: string
+//   ): Promise<boolean>
+// }
+export type UserModel = {
   isUserExit(id: string): Promise<Partial<IUser> | null>
   isPasswordMatch(
     givenPassword: string,
     savedPassword: string
   ): Promise<boolean>
-}
-
-export type UserModel = Model<IUser, Record<string, unknown>, IUserMethods>
+} & Model<IUser>
