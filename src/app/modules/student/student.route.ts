@@ -1,6 +1,6 @@
 import express from 'express'
 
-import zodValidation from '../../middleware/zodValidation'
+import zodValidation from '../../middleware/Validation'
 
 import { StudentController } from './student.controller'
 

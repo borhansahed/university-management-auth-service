@@ -41,7 +41,6 @@ const createStudent = async (
     user.student = newStudent[0]._id
 
     const newUser = await User.create([user], { session })
-
     if (!newUser.length) throw new Error('failed to create user!')
 
     newUserData = newUser[0]
@@ -51,6 +50,7 @@ const createStudent = async (
   } catch (err) {
     await session.abortTransaction()
     await session.endSession()
+    throw err
   }
 
   if (newUserData) {

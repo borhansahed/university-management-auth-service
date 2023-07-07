@@ -1,5 +1,5 @@
 import express from 'express'
-import Validation from '../../middleware/zodValidation'
+import Validation from '../../middleware/Validation'
 import { AcademicSemesterValidation } from './academicSemester.validation'
 import { AcademicSemesterController } from './academicSemester.controller'
 
