@@ -11,4 +11,10 @@ route.post(
   AuthController.loginUser
 )
 
+route.post(
+  '/refresh-token',
+  Validation(AuthValidation.refreshTokenValidation),
+  AuthController.refreshToken
+)
+
 export const AuthRoute = route
