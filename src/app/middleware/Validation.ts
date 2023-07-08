@@ -11,7 +11,7 @@ const Validation =
         params: req.params,
         cookies: req.cookies,
       })
-      next()
+      return next()
     } catch (error) {
       next(error)
     }
